@@ -20,13 +20,19 @@ const Index = () => {
     let ballSpeedX = 5;
     let ballSpeedY = 5;
 
-    const drawRect = (x, y, w, h, color) => {
-      context.fillStyle = color;
+    const drawRect = (x, y, w, h, color1, color2) => {
+      const gradient = context.createLinearGradient(x, y, x + w, y + h);
+      gradient.addColorStop(0, color1);
+      gradient.addColorStop(1, color2);
+      context.fillStyle = gradient;
       context.fillRect(x, y, w, h);
     };
 
-    const drawCircle = (x, y, r, color) => {
-      context.fillStyle = color;
+    const drawCircle = (x, y, r, color1, color2) => {
+      const gradient = context.createRadialGradient(x, y, r / 2, x, y, r);
+      gradient.addColorStop(0, color1);
+      gradient.addColorStop(1, color2);
+      context.fillStyle = gradient;
       context.beginPath();
       context.arc(x, y, r, 0, Math.PI * 2, true);
       context.fill();
@@ -34,16 +40,16 @@ const Index = () => {
 
     const drawNet = () => {
       for (let i = 0; i < canvas.height; i += 20) {
-        drawRect(canvas.width / 2 - 1, i, 2, 10, "white");
+        drawRect(canvas.width / 2 - 1, i, 2, 10, "#ffffff", "#000000"); // Net gradient
       }
     };
 
     const draw = () => {
-      drawRect(0, 0, canvas.width, canvas.height, "black");
+      drawRect(0, 0, canvas.width, canvas.height, "#000428", "#004e92"); // Background gradient
       drawNet();
-      drawRect(0, paddle1Y, paddleWidth, paddleHeight, "red");
-      drawRect(canvas.width - paddleWidth, paddle2Y, paddleWidth, paddleHeight, "blue");
-      drawCircle(ballX, ballY, ballSize, "white");
+      drawRect(0, paddle1Y, paddleWidth, paddleHeight, "#ff512f", "#dd2476"); // Paddle 1 gradient
+      drawRect(canvas.width - paddleWidth, paddle2Y, paddleWidth, paddleHeight, "#36d1dc", "#5b86e5"); // Paddle 2 gradient
+      drawCircle(ballX, ballY, ballSize, "#ffe259", "#ffa751"); // Ball gradient
     };
 
     const move = () => {

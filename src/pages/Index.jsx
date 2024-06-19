@@ -45,7 +45,7 @@ const Index = () => {
     };
 
     const draw = () => {
-      drawRect(0, 0, canvas.width, canvas.height, "#000428", "#004e92"); // Background gradient
+      drawRect(0, 0, canvas.width, canvas.height, "#87CEEB", "#00BFFF"); // Background gradient
       drawNet();
       drawRect(0, paddle1Y, paddleWidth, paddleHeight, "#ff512f", "#dd2476"); // Paddle 1 gradient
       drawRect(canvas.width - paddleWidth, paddle2Y, paddleWidth, paddleHeight, "#36d1dc", "#5b86e5"); // Paddle 2 gradient

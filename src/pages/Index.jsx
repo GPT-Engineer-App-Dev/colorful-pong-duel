@@ -146,15 +146,15 @@ const Index = () => {
   }, [isGameRunning, paddle1Velocity, paddle2Velocity, ballSpeed]);
 
   return (
-    <Flex direction="column" align="center" justify="center" height="100vh" bg="gray.800">
-      <Text fontSize="4xl" color="white" mb={4}>
+    <Flex direction="column" align="center" justify="center" height="100vh" bg="gray.800" p={4}>
+      <Text fontSize={["2xl", "3xl", "4xl"]} color="white" mb={4}>
         2-Player Pong Game
       </Text>
-      <Box>
-        <canvas ref={canvasRef} width="800" height="600" style={{ border: "1px solid white" }} />
+      <Box width="100%" maxWidth="800px" height="auto" aspectRatio="4 / 3">
+        <canvas ref={canvasRef} style={{ width: "100%", height: "100%", border: "1px solid white" }} />
       </Box>
-      <Flex direction="column" align="center" mt={4}>
-        <Text fontSize="xl" color="white" mb={2}>
+      <Flex direction="column" align="center" mt={4} width="100%" maxWidth="300px">
+        <Text fontSize={["md", "lg", "xl"]} color="white" mb={2}>
           Ball Speed
         </Text>
         <Slider
@@ -164,7 +164,7 @@ const Index = () => {
           max={10}
           step={1}
           onChange={(val) => setBallSpeed(val)}
-          width="300px"
+          width="100%"
           colorScheme="teal"
         >
           <SliderTrack>
@@ -177,6 +177,8 @@ const Index = () => {
         mt={4}
         colorScheme={isGameRunning ? "red" : "green"}
         onClick={() => setIsGameRunning(!isGameRunning)}
+        width="100%"
+        maxWidth="200px"
       >
         {isGameRunning ? "Stop Game" : "Start Game"}
       </Button>

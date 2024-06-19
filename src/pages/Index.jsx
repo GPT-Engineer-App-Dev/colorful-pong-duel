@@ -4,8 +4,8 @@ import { Box, Button, Flex, Text } from "@chakra-ui/react";
 const Index = () => {
   const canvasRef = useRef(null);
   const [isGameRunning, setIsGameRunning] = useState(false);
-  const [paddle1Velocity, setPaddle1Velocity] = useState(0);
-  const [paddle2Velocity, setPaddle2Velocity] = useState(0);
+  const paddle1Velocity = useRef(0);
+  const paddle2Velocity = useRef(0);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -58,8 +58,8 @@ const Index = () => {
       ballX += ballSpeedX;
       ballY += ballSpeedY;
 
-      paddle1Y += paddle1Velocity;
-      paddle2Y += paddle2Velocity;
+      paddle1Y += paddle1Velocity.current;
+      paddle2Y += paddle2Velocity.current;
 
       // Ensure paddles stay within the canvas
       paddle1Y = Math.max(Math.min(paddle1Y, canvas.height - paddleHeight), 0);
@@ -103,16 +103,16 @@ const Index = () => {
     const handleKeyDown = (e) => {
       switch (e.key) {
         case "w":
-          setPaddle1Velocity(-5);
+          paddle1Velocity.current = -5;
           break;
         case "s":
-          setPaddle1Velocity(5);
+          paddle1Velocity.current = 5;
           break;
         case "ArrowUp":
-          setPaddle2Velocity(-5);
+          paddle2Velocity.current = -5;
           break;
         case "ArrowDown":
-          setPaddle2Velocity(5);
+          paddle2Velocity.current = 5;
           break;
         default:
           break;
@@ -123,11 +123,11 @@ const Index = () => {
       switch (e.key) {
         case "w":
         case "s":
-          setPaddle1Velocity(0);
+          paddle1Velocity.current = 0;
           break;
         case "ArrowUp":
         case "ArrowDown":
-          setPaddle2Velocity(0);
+          paddle2Velocity.current = 0;
           break;
         default:
           break;
@@ -142,7 +142,7 @@ const Index = () => {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
     };
-  }, [isGameRunning]);
+  }, [isGameRunning, paddle1Velocity, paddle2Velocity]);
 
   return (
     <Flex direction="column" align="center" justify="center" height="100vh" bg="gray.800">

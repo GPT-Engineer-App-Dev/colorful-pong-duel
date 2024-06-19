@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Text, Slider, SliderTrack, SliderFilledTrack, SliderThumb } from "@chakra-ui/react";
 
 const Index = () => {
   const canvasRef = useRef(null);
   const [isGameRunning, setIsGameRunning] = useState(false);
+  const [ballSpeed, setBallSpeed] = useState(5); // Default ball speed
   const paddle1Velocity = useRef(0);
   const paddle2Velocity = useRef(0);
 
@@ -19,8 +20,8 @@ const Index = () => {
     let paddle2Y = canvas.height / 2 - paddleHeight / 2;
     let ballX = canvas.width / 2;
     let ballY = canvas.height / 2;
-    let ballSpeedX = 5;
-    let ballSpeedY = 5;
+    let ballSpeedX = ballSpeed; // Use the selected ball speed
+    let ballSpeedY = ballSpeed; // Use the selected ball speed
 
     const drawRect = (x, y, w, h, color1, color2) => {
       const gradient = context.createLinearGradient(x, y, x + w, y + h);
@@ -142,7 +143,7 @@ const Index = () => {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
     };
-  }, [isGameRunning, paddle1Velocity, paddle2Velocity]);
+  }, [isGameRunning, paddle1Velocity, paddle2Velocity, ballSpeed]);
 
   return (
     <Flex direction="column" align="center" justify="center" height="100vh" bg="gray.800">
@@ -152,6 +153,26 @@ const Index = () => {
       <Box>
         <canvas ref={canvasRef} width="800" height="600" style={{ border: "1px solid white" }} />
       </Box>
+      <Flex direction="column" align="center" mt={4}>
+        <Text fontSize="xl" color="white" mb={2}>
+          Ball Speed
+        </Text>
+        <Slider
+          aria-label="ball-speed-slider"
+          defaultValue={5}
+          min={1}
+          max={10}
+          step={1}
+          onChange={(val) => setBallSpeed(val)}
+          width="300px"
+          colorScheme="teal"
+        >
+          <SliderTrack>
+            <SliderFilledTrack />
+          </SliderTrack>
+          <SliderThumb />
+        </Slider>
+      </Flex>
       <Button
         mt={4}
         colorScheme={isGameRunning ? "red" : "green"}

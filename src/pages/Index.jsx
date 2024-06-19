@@ -4,6 +4,8 @@ import { Box, Button, Flex, Text } from "@chakra-ui/react";
 const Index = () => {
   const canvasRef = useRef(null);
   const [isGameRunning, setIsGameRunning] = useState(false);
+  const [paddle1Velocity, setPaddle1Velocity] = useState(0);
+  const [paddle2Velocity, setPaddle2Velocity] = useState(0);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -56,6 +58,13 @@ const Index = () => {
       ballX += ballSpeedX;
       ballY += ballSpeedY;
 
+      paddle1Y += paddle1Velocity;
+      paddle2Y += paddle2Velocity;
+
+      // Ensure paddles stay within the canvas
+      paddle1Y = Math.max(Math.min(paddle1Y, canvas.height - paddleHeight), 0);
+      paddle2Y = Math.max(Math.min(paddle2Y, canvas.height - paddleHeight), 0);
+
       if (ballY + ballSize > canvas.height || ballY - ballSize < 0) {
         ballSpeedY = -ballSpeedY;
       }
@@ -94,16 +103,31 @@ const Index = () => {
     const handleKeyDown = (e) => {
       switch (e.key) {
         case "w":
-          paddle1Y = Math.max(paddle1Y - 20, 0);
+          setPaddle1Velocity(-5);
           break;
         case "s":
-          paddle1Y = Math.min(paddle1Y + 20, canvas.height - paddleHeight);
+          setPaddle1Velocity(5);
           break;
         case "ArrowUp":
-          paddle2Y = Math.max(paddle2Y - 20, 0);
+          setPaddle2Velocity(-5);
           break;
         case "ArrowDown":
-          paddle2Y = Math.min(paddle2Y + 20, canvas.height - paddleHeight);
+          setPaddle2Velocity(5);
+          break;
+        default:
+          break;
+      }
+    };
+
+    const handleKeyUp = (e) => {
+      switch (e.key) {
+        case "w":
+        case "s":
+          setPaddle1Velocity(0);
+          break;
+        case "ArrowUp":
+        case "ArrowDown":
+          setPaddle2Velocity(0);
           break;
         default:
           break;
@@ -111,10 +135,12 @@ const Index = () => {
     };
 
     window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
     gameLoop();
 
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
     };
   }, [isGameRunning]);
 

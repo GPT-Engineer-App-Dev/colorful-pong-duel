@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Box, Button, Flex, Text, Slider, SliderTrack, SliderFilledTrack, SliderThumb } from "@chakra-ui/react";
-import { useHubs, useAddHub, useUpdateHub, useDeleteHub } from "../integrations/supabase/index.js";
+import { useHubs, useAddHub, useUpdateHub, useDeleteHub } from "../integrations/supabase";
 
 const Index = () => {
   const canvasRef = useRef(null);

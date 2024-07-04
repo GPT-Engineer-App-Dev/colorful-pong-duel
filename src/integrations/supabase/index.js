@@ -19,134 +19,53 @@ const fromSupabase = async (query) => {
 
 /* supabase integration types
 
-### hubs
+// EXAMPLE TYPES SECTION
+// DO NOT USE TYPESCRIPT
 
-| name  | type | format | required |
-|-------|------|--------|----------|
-| id    | int8 | number | true     |
-| image | text | string | false    |
+### foos
 
-### main_ports
+| name    | type | format | required |
+|---------|------|--------|----------|
+| id      | int8 | number | true     |
+| title   | text | string | true     |
+| date    | date | string | true     |
 
-| name | type | format | required |
-|------|------|--------|----------|
-| id   | int8 | number | true     |
-| name | text | string | false    |
+### bars
 
-### specific_ports
-
-| name        | type | format | required |
-|-------------|------|--------|----------|
-| id          | int8 | number | true     |
-| name        | text | string | false    |
-| main_port_id| int8 | number | false    |
-
+| name    | type | format | required |
+|---------|------|--------|----------|
+| id      | int8 | number | true     |
+| foo_id  | int8 | number | true     |  // foreign key to foos
+	
 */
 
-export const useHubs = () => useQuery({
-    queryKey: ['hubs'],
-    queryFn: () => fromSupabase(supabase.from('hubs').select('*')),
-});
-export const useHub = (id) => useQuery({
-    queryKey: ['hubs', id],
-    queryFn: () => fromSupabase(supabase.from('hubs').select('*').eq('id', id).single()),
-});
-export const useAddHub = () => {
+// Example hook for models
+
+export const useFoo = ()=> useQuery({
+    queryKey: ['foos'],
+    queryFn: fromSupabase(supabase.from('foos')),
+})
+export const useAddFoo = () => {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: (newHub) => fromSupabase(supabase.from('hubs').insert([newHub])),
-        onSuccess: () => {
-            queryClient.invalidateQueries('hubs');
-        },
-    });
-};
-export const useUpdateHub = () => {
-    const queryClient = useQueryClient();
-    return useMutation({
-        mutationFn: (updatedHub) => fromSupabase(supabase.from('hubs').update(updatedHub).eq('id', updatedHub.id)),
-        onSuccess: () => {
-            queryClient.invalidateQueries('hubs');
-        },
-    });
-};
-export const useDeleteHub = () => {
-    const queryClient = useQueryClient();
-    return useMutation({
-        mutationFn: (id) => fromSupabase(supabase.from('hubs').delete().eq('id', id)),
-        onSuccess: () => {
-            queryClient.invalidateQueries('hubs');
+        mutationFn: (newFoo)=> fromSupabase(supabase.from('foos').insert([{ title: newFoo.title }])),
+        onSuccess: ()=> {
+            queryClient.invalidateQueries('foos');
         },
     });
 };
 
-export const useMainPorts = () => useQuery({
-    queryKey: ['main_ports'],
-    queryFn: () => fromSupabase(supabase.from('main_ports').select('*')),
-});
-export const useMainPort = (id) => useQuery({
-    queryKey: ['main_ports', id],
-    queryFn: () => fromSupabase(supabase.from('main_ports').select('*').eq('id', id).single()),
-});
-export const useAddMainPort = () => {
+export const useBar = ()=> useQuery({
+    queryKey: ['bars'],
+    queryFn: fromSupabase(supabase.from('bars')),
+})
+export const useAddBar = () => {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: (newMainPort) => fromSupabase(supabase.from('main_ports').insert([newMainPort])),
-        onSuccess: () => {
-            queryClient.invalidateQueries('main_ports');
-        },
-    });
-};
-export const useUpdateMainPort = () => {
-    const queryClient = useQueryClient();
-    return useMutation({
-        mutationFn: (updatedMainPort) => fromSupabase(supabase.from('main_ports').update(updatedMainPort).eq('id', updatedMainPort.id)),
-        onSuccess: () => {
-            queryClient.invalidateQueries('main_ports');
-        },
-    });
-};
-export const useDeleteMainPort = () => {
-    const queryClient = useQueryClient();
-    return useMutation({
-        mutationFn: (id) => fromSupabase(supabase.from('main_ports').delete().eq('id', id)),
-        onSuccess: () => {
-            queryClient.invalidateQueries('main_ports');
+        mutationFn: (newBar)=> fromSupabase(supabase.from('bars').insert([{ foo_id: newBar.foo_id }])),
+        onSuccess: ()=> {
+            queryClient.invalidateQueries('bars');
         },
     });
 };
 
-export const useSpecificPorts = () => useQuery({
-    queryKey: ['specific_ports'],
-    queryFn: () => fromSupabase(supabase.from('specific_ports').select('*')),
-});
-export const useSpecificPort = (id) => useQuery({
-    queryKey: ['specific_ports', id],
-    queryFn: () => fromSupabase(supabase.from('specific_ports').select('*').eq('id', id).single()),
-});
-export const useAddSpecificPort = () => {
-    const queryClient = useQueryClient();
-    return useMutation({
-        mutationFn: (newSpecificPort) => fromSupabase(supabase.from('specific_ports').insert([newSpecificPort])),
-        onSuccess: () => {
-            queryClient.invalidateQueries('specific_ports');
-        },
-    });
-};
-export const useUpdateSpecificPort = () => {
-    const queryClient = useQueryClient();
-    return useMutation({
-        mutationFn: (updatedSpecificPort) => fromSupabase(supabase.from('specific_ports').update(updatedSpecificPort).eq('id', updatedSpecificPort.id)),
-        onSuccess: () => {
-            queryClient.invalidateQueries('specific_ports');
-        },
-    });
-};
-export const useDeleteSpecificPort = () => {
-    const queryClient = useQueryClient();
-    return useMutation({
-        mutationFn: (id) => fromSupabase(supabase.from('specific_ports').delete().eq('id', id)),
-        onSuccess: () => {
-            queryClient.invalidateQueries('specific_ports');
-        },
-    });
-};

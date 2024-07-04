@@ -13,7 +13,10 @@ export function SupabaseProvider({ children }) {
 
 const fromSupabase = async (query) => {
     const { data, error } = await query;
-    if (error) throw new Error(error.message);
+    if (error) {
+        console.error(error);
+        throw new Error(error.message);
+    }
     return data;
 };
 
@@ -35,22 +38,25 @@ const fromSupabase = async (query) => {
 
 ### specific_ports
 
-| name        | type | format | required |
-|-------------|------|--------|----------|
-| id          | int8 | number | true     |
-| name        | text | string | false    |
-| main_port_id| int8 | number | false    |  // foreign key to main_ports
+| name         | type | format | required |
+|--------------|------|--------|----------|
+| id           | int8 | number | true     |
+| name         | text | string | false    |
+| main_port_id | int8 | number | false    |
 
 */
 
+// Hooks for hubs
 export const useHubs = () => useQuery({
     queryKey: ['hubs'],
     queryFn: () => fromSupabase(supabase.from('hubs').select('*')),
 });
+
 export const useHub = (id) => useQuery({
     queryKey: ['hubs', id],
     queryFn: () => fromSupabase(supabase.from('hubs').select('*').eq('id', id).single()),
 });
+
 export const useAddHub = () => {
     const queryClient = useQueryClient();
     return useMutation({
@@ -60,6 +66,7 @@ export const useAddHub = () => {
         },
     });
 };
+
 export const useUpdateHub = () => {
     const queryClient = useQueryClient();
     return useMutation({
@@ -69,6 +76,7 @@ export const useUpdateHub = () => {
         },
     });
 };
+
 export const useDeleteHub = () => {
     const queryClient = useQueryClient();
     return useMutation({
@@ -79,14 +87,17 @@ export const useDeleteHub = () => {
     });
 };
 
+// Hooks for main_ports
 export const useMainPorts = () => useQuery({
     queryKey: ['main_ports'],
     queryFn: () => fromSupabase(supabase.from('main_ports').select('*')),
 });
+
 export const useMainPort = (id) => useQuery({
     queryKey: ['main_ports', id],
     queryFn: () => fromSupabase(supabase.from('main_ports').select('*').eq('id', id).single()),
 });
+
 export const useAddMainPort = () => {
     const queryClient = useQueryClient();
     return useMutation({
@@ -96,6 +107,7 @@ export const useAddMainPort = () => {
         },
     });
 };
+
 export const useUpdateMainPort = () => {
     const queryClient = useQueryClient();
     return useMutation({
@@ -105,6 +117,7 @@ export const useUpdateMainPort = () => {
         },
     });
 };
+
 export const useDeleteMainPort = () => {
     const queryClient = useQueryClient();
     return useMutation({
@@ -115,14 +128,17 @@ export const useDeleteMainPort = () => {
     });
 };
 
+// Hooks for specific_ports
 export const useSpecificPorts = () => useQuery({
     queryKey: ['specific_ports'],
     queryFn: () => fromSupabase(supabase.from('specific_ports').select('*')),
 });
+
 export const useSpecificPort = (id) => useQuery({
     queryKey: ['specific_ports', id],
     queryFn: () => fromSupabase(supabase.from('specific_ports').select('*').eq('id', id).single()),
 });
+
 export const useAddSpecificPort = () => {
     const queryClient = useQueryClient();
     return useMutation({
@@ -132,6 +148,7 @@ export const useAddSpecificPort = () => {
         },
     });
 };
+
 export const useUpdateSpecificPort = () => {
     const queryClient = useQueryClient();
     return useMutation({
@@ -141,6 +158,7 @@ export const useUpdateSpecificPort = () => {
         },
     });
 };
+
 export const useDeleteSpecificPort = () => {
     const queryClient = useQueryClient();
     return useMutation({

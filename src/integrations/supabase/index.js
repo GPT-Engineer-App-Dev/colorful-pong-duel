@@ -39,7 +39,7 @@ const fromSupabase = async (query) => {
 |-------------|------|--------|----------|
 | id          | int8 | number | true     |
 | name        | text | string | false    |
-| main_port_id| int8 | number | false    |
+| main_port_id| int8 | number | false    |  // foreign key to main_ports
 
 */
 

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Box, Button, Flex, Text, Slider, SliderTrack, SliderFilledTrack, SliderThumb } from "@chakra-ui/react";
+import { useHubs, useAddHub, useUpdateHub, useDeleteHub } from "../integrations/supabase/index.js";
 
 const Index = () => {
   const canvasRef = useRef(null);
@@ -7,6 +8,11 @@ const Index = () => {
   const [ballSpeed, setBallSpeed] = useState(5); // Default ball speed
   const paddle1Velocity = useRef(0);
   const paddle2Velocity = useRef(0);
+
+  const { data: hubs, isLoading, isError } = useHubs();
+  const addHub = useAddHub();
+  const updateHub = useUpdateHub();
+  const deleteHub = useDeleteHub();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -182,6 +188,20 @@ const Index = () => {
       >
         {isGameRunning ? "Stop Game" : "Start Game"}
       </Button>
+      <Box mt={4} color="white">
+        <Text fontSize="xl" mb={2}>Hubs Data</Text>
+        {isLoading && <Text>Loading...</Text>}
+        {isError && <Text>Error loading data</Text>}
+        {hubs && hubs.map(hub => (
+          <Box key={hub.id} p={2} border="1px solid white" mb={2}>
+            <Text>ID: {hub.id}</Text>
+            <Text>Image: {hub.image}</Text>
+            <Button colorScheme="blue" onClick={() => updateHub.mutate({ id: hub.id, image: "new_image_url" })}>Update</Button>
+            <Button colorScheme="red" onClick={() => deleteHub.mutate(hub.id)}>Delete</Button>
+          </Box>
+        ))}
+        <Button colorScheme="green" onClick={() => addHub.mutate({ image: "new_image_url" })}>Add Hub</Button>
+      </Box>
     </Flex>
   );
 };
